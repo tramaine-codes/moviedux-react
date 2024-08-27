@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
 import Footer from "./components/Footer";
@@ -6,7 +7,17 @@ import MoviesGrid from "./components/MoviesGrid";
 import Watchlist from "./components/Watchlist";
 import "./styles.css";
 
-function App() {
+export default function App() {
+	const [movies, setMovies] = useState([]);
+
+	useEffect(() => {
+		async function fetchMovies() {
+			const response = await fetch("movies.json");
+			setMovies(await response.json());
+		}
+		fetchMovies();
+	}, []);
+
 	return (
 		<div className="App">
 			<div className="container">
@@ -23,7 +34,7 @@ function App() {
 						</ul>
 					</nav>
 					<Routes>
-						<Route path="/" element={<MoviesGrid />} />
+						<Route path="/" element={<MoviesGrid movies={movies} />} />
 						<Route path="/watchlist" element={<Watchlist />} />
 					</Routes>
 				</Router>
@@ -33,5 +44,3 @@ function App() {
 		</div>
 	);
 }
-
-export default App;

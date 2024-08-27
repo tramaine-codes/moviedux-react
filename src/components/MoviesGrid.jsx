@@ -1,20 +1,12 @@
-import { useEffect, useState } from "react";
+/* eslint-disable react/prop-types */
+import { useState } from "react";
 import "../styles.css";
 import MovieCard from "./MovieCard";
 
-export default function MoviesGrid() {
-	const [movies, setMovies] = useState([]);
+export default function MoviesGrid({ movies }) {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [genre, setGenre] = useState("All Genres");
 	const [rating, setRating] = useState("All");
-
-	useEffect(() => {
-		async function fetchMovies() {
-			const response = await fetch("movies.json");
-			setMovies(await response.json());
-		}
-		fetchMovies();
-	}, []);
 
 	const handleSearchChange = (e) => {
 		setSearchTerm(e.target.value);
