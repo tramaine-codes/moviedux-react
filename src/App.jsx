@@ -9,6 +9,7 @@ import "./styles.css";
 
 export default function App() {
 	const [movies, setMovies] = useState([]);
+	const [watchlist, setWatchlist] = useState([]);
 
 	useEffect(() => {
 		async function fetchMovies() {
@@ -17,6 +18,14 @@ export default function App() {
 		}
 		fetchMovies();
 	}, []);
+
+	const toggleWatchlist = (movieId) => {
+		setWatchlist((prev) =>
+			prev.includes(movieId)
+				? prev.filter((id) => id !== movieId)
+				: [...prev, movieId],
+		);
+	};
 
 	return (
 		<div className="App">
@@ -34,8 +43,26 @@ export default function App() {
 						</ul>
 					</nav>
 					<Routes>
-						<Route path="/" element={<MoviesGrid movies={movies} />} />
-						<Route path="/watchlist" element={<Watchlist />} />
+						<Route
+							path="/"
+							element={
+								<MoviesGrid
+									movies={movies}
+									watchlist={watchlist}
+									toggleWatchlist={toggleWatchlist}
+								/>
+							}
+						/>
+						<Route
+							path="/watchlist"
+							element={
+								<Watchlist
+									movies={movies}
+									watchlist={watchlist}
+									toggleWatchlist={toggleWatchlist}
+								/>
+							}
+						/>
 					</Routes>
 				</Router>
 			</div>
