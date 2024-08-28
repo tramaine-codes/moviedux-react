@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unescaped-entities */
 import "../styles.css";
 
 export default function Header() {

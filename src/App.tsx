@@ -7,9 +7,17 @@ import MoviesGrid from "./components/MoviesGrid";
 import Watchlist from "./components/Watchlist";
 import "./styles.css";
 
+export interface Movie {
+	readonly id: number;
+	readonly title: string;
+	readonly image: string;
+	readonly genre: string;
+	readonly rating: string;
+}
+
 export default function App() {
-	const [movies, setMovies] = useState([]);
-	const [watchlist, setWatchlist] = useState([]);
+	const [movies, setMovies] = useState<Movie[]>([]);
+	const [watchlist, setWatchlist] = useState<number[]>([]);
 
 	useEffect(() => {
 		async function fetchMovies() {
@@ -19,7 +27,7 @@ export default function App() {
 		fetchMovies();
 	}, []);
 
-	const toggleWatchlist = (movieId) => {
+	const toggleWatchlist = (movieId: number) => {
 		setWatchlist((prev) =>
 			prev.includes(movieId)
 				? prev.filter((id) => id !== movieId)

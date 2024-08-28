@@ -1,41 +1,55 @@
-/* eslint-disable react/prop-types */
+import type React from "react";
 import { useState } from "react";
+import type { Movie } from "../App";
 import "../styles.css";
 import MovieCard from "./MovieCard";
 
-export default function MoviesGrid({ movies, watchlist, toggleWatchlist }) {
+interface MoviesGridProps {
+	readonly movies: readonly Movie[];
+	readonly watchlist: readonly number[];
+	readonly toggleWatchlist: (movieId: number) => void;
+}
+
+export default function MoviesGrid({
+	movies,
+	watchlist,
+	toggleWatchlist,
+}: MoviesGridProps) {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [genre, setGenre] = useState("All Genres");
 	const [rating, setRating] = useState("All");
 
-	const handleSearchChange = (e) => {
+	const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchTerm(e.target.value);
 	};
 
-	const handleGenreChange = (e) => {
+	const handleGenreChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		setGenre(e.target.value);
 	};
 
-	const handleRatingChange = (e) => {
+	const handleRatingChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		setRating(e.target.value);
 	};
 
-	const matchesSearchTerm = (movie, searchTerm) =>
+	const matchesSearchTerm = (movie: Movie, searchTerm: string) =>
 		movie.title.toLowerCase().includes(searchTerm.toLowerCase());
 
-	const matchesGenre = (movie, genre) =>
+	const matchesGenre = (movie: Movie, genre: string) =>
 		genre === "All Genres" || movie.genre.toLowerCase() === genre.toLowerCase();
 
-	const matchesRating = (movie, rating) => {
+	const matchesRating = (movie: Movie, rating: string) => {
 		switch (rating) {
 			case "All":
 				return true;
 			case "Good":
-				return movie.rating >= 8;
+				return Number.parseFloat(movie.rating) >= 8;
 			case "Ok":
-				return movie.rating >= 5 && movie.rating < 8;
+				return (
+					Number.parseFloat(movie.rating) >= 5 &&
+					Number.parseFloat(movie.rating) < 8
+				);
 			case "Bad":
-				return movie.rating < 5;
+				return Number.parseFloat(movie.rating) < 5;
 			default:
 				return false;
 		}

@@ -1,17 +1,28 @@
-/* eslint-disable react/prop-types */
+import type React from "react";
+import type { Movie } from "../App";
 import "../styles.css";
 
-export default function MovieCard({ movie, isWatchlisted, toggleWatchlist }) {
-	const handleError = (e) => {
+interface MovieCardProps {
+	readonly movie: Movie;
+	readonly isWatchlisted: boolean;
+	readonly toggleWatchlist: (movieId: number) => void;
+}
+
+export default function MovieCard({
+	movie,
+	isWatchlisted,
+	toggleWatchlist,
+}: MovieCardProps) {
+	const handleError = (e: React.ChangeEvent<HTMLImageElement>) => {
 		e.target.src = "images/default.jpg";
 	};
 
-	const ratingClass = (rating) => {
-		if (rating >= 8) {
+	const ratingClass = (rating: string) => {
+		if (Number.parseFloat(rating) >= 8) {
 			return "rating-good";
 		}
 
-		if (rating >= 5) {
+		if (Number.parseFloat(rating) >= 5) {
 			return "rating-ok";
 		}
 
